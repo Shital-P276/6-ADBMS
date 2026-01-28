@@ -1,5 +1,5 @@
 
-//Simple Object Type 
+--Simple Object Type 
 CREATE TYPE address_type AS OBJECT (
     house_no VARCHAR(20),
     street VARCHAR(30),
@@ -8,8 +8,8 @@ CREATE TYPE address_type AS OBJECT (
 );
 /
 
-//Another object using first object
-//object nesting
+--Another object using first object
+--object nesting
 CREATE TYPE student_type AS OBJECT (
     sid NUMBER,
     name VARCHAR(30),
@@ -18,10 +18,10 @@ CREATE TYPE student_type AS OBJECT (
 );
 /
 
-//create a table 
+--create a table 
 CREATE TABLE student_table OF student_type;
 
-//Insert objects
+--Insert objects
 INSERT INTO student_table VALUES (
     student_type(
         101,
@@ -43,7 +43,7 @@ INSERT INTO student_table VALUES (
 
 COMMIT;
 
-//Select Operations 
+--Select Operations 
 SELECT * FROM student_table;
 
 SELECT s.sid, s.name,s.address.city
@@ -53,16 +53,17 @@ SELECT name
 FROM student_table s
 WHERE s.address.city = 'Mumbai';
 
-//update operations 
+--update operations 
 UPDATE student_table
 SET address = address_type('45B','Link Road','Mumbai',400002)
 WHERE sid= 102;
 
-//delete operation
+--delete operation
 DELETE FROM student_table
 WHERE sid= 102;
 
-//Drop & cleanup
+--Drop & cleanup
 DROP TABLE student_table;
 DROP TYPE student_type;
 DROP TYPE address_type;
+
