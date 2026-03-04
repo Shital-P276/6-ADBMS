@@ -116,7 +116,6 @@ SELECT * FROM TABLE(DBMS_XPLAN.DISPLAY);
 
 
 
-
 -- Dropping
 -- 1. Drop Partitioned Tables
 DROP TABLE Emp_Range_Part;
@@ -135,5 +134,6 @@ DROP TABLE Employee_Master;
 
 -- 5. Clear Explain Plan Table (Optional, but keeps things clean)
 DELETE FROM PLAN_TABLE;
+
 
 COMMIT;
