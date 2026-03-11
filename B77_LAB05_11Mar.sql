@@ -1,6 +1,3 @@
--- Shital Patil 
--- B-II Roll.no B-77
--- PRN : 2324001011
 
 
 -- Experiment No. 4: Implementation of Range and Hash Partition
