@@ -1,0 +1,37 @@
+db.students.insertMany([
+  {
+    "student_id": 119,
+    "first_name": "Karan",
+    "last_name": "Johar",
+    "age": 22,
+    "grade": "B",
+    "major": "Cinema Studies",
+    "email": "karan.j@example.com"
+  },
+  {
+    "student_id": 120,
+    "first_name": "Sara",
+    "last_name": "Ali",
+    "age": 21,
+    "grade": "A",
+    "major": "History",
+    "email": "sara.a@example.com"
+  },
+  {
+    "student_id": 121,
+    "first_name": "Varun",
+    "last_name": "Dhawan",
+    "age": 23,
+    "grade": "C",
+    "major": "Physical Education",
+    "email": "varun.d@example.com"
+  }
+])
+
+db.students.find({first_name: "Sara"});
+
+
+db.students.updateOne(
+  { "student_id": 101 },
+  { "$set": { "major": "Robotics" } }
+)
