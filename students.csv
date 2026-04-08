@@ -1,0 +1,16 @@
+student_id,first_name,last_name,age,grade,major,email
+101,Arjun,Sharma,20,A,Computer Science,arjun.s@example.com
+102,Sanya,Verma,21,B,Electrical Engineering,sanya.v@example.com
+103,Rohan,Gupta,22,A,Mechanical Engineering,rohan.g@example.com
+104,Ananya,Iyer,19,A,Data Science,ananya.i@example.com
+105,Kabir,Singh,20,C,Civil Engineering,kabir.s@example.com
+106,Ishani,Mehta,21,B,Biotechnology,ishani.m@example.com
+107,Aarav,Patel,22,A,Computer Science,aarav.p@example.com
+108,Meera,Reddy,19,B,Information Technology,meera.r@example.com
+109,Vihaan,Deshmukh,20,A,Mathematics,vihaan.d@example.com
+110,Diya,Nair,21,B,Physics,diya.n@example.com
+111,Aditya,Joshi,22,C,Chemistry,aditya.j@example.com
+112,Kiara,Kapoor,20,A,Economics,kiara.k@example.com
+113,Dev,Malhotra,21,B,Business Admin,dev.m@example.com
+114,Tara,Chopra,19,A,Psychology,tara.c@example.com
+115,Aryan,Khan,22,B,Computer Science,aryan.k@example.com
