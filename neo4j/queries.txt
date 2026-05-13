@@ -1,0 +1,137 @@
+Sports League Graph Database - Cypher Queries
+This repository contains the full suite of verified Cypher queries used to analyze, update, and traverse the Sports League Graph Database in Neo4j.
+
+
+Query 1: Display Complete Graph
+Retrieves all existing nodes and their directional relationships to render the complete interactive visual layout of the graph.
+
+Cypher
+MATCH (n)
+OPTIONAL MATCH (n)-[r]->(m)
+RETURN n, r, m;
+
+
+
+
+
+
+Query 2: Display All Players of a Team
+Retrieves the profile details (ID, Name, Age, and Role) of all players associated with a specific franchise (e.g., "Mumbai Indians") by traversing the PLAYS_FOR relationship.
+
+Cypher
+MATCH (p:Players)-[:PLAYS_FOR]->(t:Team {team_name: "Mumbai Indians"})
+RETURN p.player_id AS PlayerID, p.name AS PlayerName, p.age AS Age, p.role AS Role;
+
+
+
+
+Query 3: Find Team Coach
+Identifies the head coach assigned to manage a specific team along with their professional years of experience.
+
+Cypher
+MATCH (c:Coach)-[:COACHES]->(t:Team {team_name: "Mumbai Indians"})
+RETURN t.team_name AS TeamName, c.name AS CoachName, c.experience AS YearsOfExperience;
+
+
+
+
+
+Query 4: Display Matches Played at a Specific Stadium
+Lists all historical or scheduled match matches hosted at a designated sporting venue (e.g., "Wankhede Stadium").
+
+Cypher
+MATCH (m:Match)-[:HOSTED_AT]->(s:Stadium {stadium_name: "Wankhede Stadium"})
+RETURN s.stadium_name AS StadiumName, m.match_id AS MatchID, m.date AS MatchDate, m.result AS MatchResult;
+
+
+
+
+
+Query 5: Find Sponsors of a Team
+Finds all corporate brand partners and sponsors financially backing a particular sports franchise.
+
+Cypher
+MATCH (sp:Sponsor)-[:SPONSORS]->(t:Team {team_name: "Mumbai Indians"})
+RETURN t.team_name AS TeamName, sp.sponsor_name AS SponsorName, sp.industry AS Industry;
+
+
+
+
+
+Query 6: Count Number of Players in Each Team
+Aggregates roster slots and counts the total number of registered player nodes grouped by each unique franchise.
+
+Cypher
+MATCH (p:Players)-[:PLAYS_FOR]->(t:Team)
+RETURN t.team_name AS TeamName, count(p) AS NumberOfPlayers;
+
+
+
+
+
+Query 7: Display All Relationships of a Player
+Traverses and reports every direct outgoing connection radiating from a single player node (e.g., "Sachin") along with the connected target node's primary label.
+
+Cypher
+MATCH (p:Players {name: "Sachin"})-[r]->(m)
+RETURN p.name AS PlayerName, type(r) AS RelationshipType, labels(m)[0] AS ConnectedNodeLabel;
+
+
+
+
+Query 8: Add Ranking Property to Teams
+Dynamically appends a custom conditional ranking property attribute to existing team nodes using a CASE structural block.
+
+Cypher
+MATCH (t:Team)
+SET t.ranking = CASE t.team_id
+  WHEN "MI" THEN 1
+  WHEN "RCB" THEN 2
+  ELSE 3
+END
+RETURN t.team_name AS TeamName, t.ranking AS TeamRanking;
+
+
+
+
+Query 9: Change Role of a Player
+Modifies and updates a specific property field on an individual player's record (e.g., updating Rohit's role to "All-Rounder").
+
+Cypher
+MATCH (p:Players {name: "rohit"})
+SET p.role = "All-Rounder"
+RETURN p.name AS PlayerName, p.role AS NewRole;
+
+
+
+
+Query 10: Delete a Player Node
+Safely severs all incoming or outgoing structural graph relationships (DETACH) before permanently purging a designated node from the system database.
+
+Cypher
+MATCH (p:Players {name: "ishaan"})
+DETACH DELETE p;
+
+
+
+
+Query 11: Find Teams Playing in Same Stadium
+Traces structural path intersections through a shared match node to identify competing teams at a given stadium venue using a direction-agnostic pattern. This prevents deprecated warnings by using modern elementId().
+
+Cypher
+MATCH (t1:Team)-[:PLAYED_IN]-(m:Match)-[:HOSTED_AT]-(s:Stadium)
+MATCH (t2:Team)-[:PLAYED_IN]-(m)
+WHERE elementId(t1) < elementId(t2)
+RETURN s.stadium_name AS StadiumName, t1.team_name AS Team1, t2.team_name AS Team2;
+
+
+
+
+
+
+Query 12: Find Shortest Path Between Two Players Through Team Connections
+Utilizes Neo4j's optimized pathfinding traversal algorithms to map the absolute shortest connection path between two separate player profiles up to 6 hops away.
+
+Cypher
+MATCH p = shortestPath((p1:Players {name: "Sachin"})-[*..6]-(p2:Players {name: "rohit"}))
+RETURN p;
