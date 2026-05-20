@@ -89,6 +89,35 @@ PARTITION BY HASH (customer_id) (
 );
 
 
+INSERT INTO Movie VALUES (1, 'RRR', 'Action', 'Telugu', 187, 'U/A', 2022);
+INSERT INTO Movie VALUES (2, 'KGF', 'Action', 'Kannada', 139, 'U/A', 2018);
+
+
+INSERT INTO Theatre VALUES (1, 'PVR Cinemas', 'Kolhapur', 5);
+INSERT INTO Theatre VALUES (2, 'INOX', 'Pune', 8);
+
+
+INSERT INTO Customer VALUES (1, 'Rahul Sharma', 'rahul@email.com', '9876543210', 'Kolhapur');
+INSERT INTO Customer VALUES (2, 'Priya Patil',  'priya@email.com', '9123456780', 'Pune');
+INSERT INTO Customer VALUES (3, 'Amit Desai',   'amit@email.com',  '9988776655', 'Kolhapur');
+
+
+INSERT INTO Seat VALUES (1, 'A1', 'Regular');
+INSERT INTO Seat VALUES (2, 'A2', 'Regular');
+INSERT INTO Seat VALUES (3, 'B1', 'Premium');
+
+
+INSERT INTO Show VALUES (1, 1, 1, DATE '2025-03-10', '10:00 AM', 200);
+INSERT INTO Show VALUES (2, 1, 2, DATE '2025-03-10', '01:00 PM', 250);
+INSERT INTO Show VALUES (3, 2, 1, DATE '2025-03-11', '06:00 PM', 300);
+
+
+INSERT INTO Booking VALUES (1, 1, 1, 1, DATE '2025-03-09', 200, 'PAID');
+INSERT INTO Booking VALUES (2, 2, 2, 2, DATE '2025-03-09', 250, 'PAID');
+INSERT INTO Booking VALUES (3, 3, 3, 3, DATE '2025-03-10', 300, 'PENDING');
+
+COMMIT;
+
 INSERT INTO Booking_Range VALUES (1, 101, 201, 301, DATE '2023-06-15', 500, 'PAID');
 INSERT INTO Booking_Range VALUES (2, 102, 202, 302, DATE '2024-03-20', 300, 'PAID');
 INSERT INTO Booking_Range VALUES (3, 103, 203, 303, DATE '2025-01-10', 450, 'PENDING');
@@ -108,3 +137,19 @@ SELECT * FROM Customer_Hash PARTITION (cust_p1);
 SELECT * FROM Customer_Hash PARTITION (cust_p2);
 SELECT * FROM Customer_Hash PARTITION (cust_p3);
 SELECT * FROM Customer_Hash PARTITION (cust_p4);
+
+
+
+SELECT * FROM Show WHERE movie_id = 1;
+
+
+SELECT * FROM Booking WHERE payment_status = 'PAID';
+
+
+SELECT * FROM Booking WHERE customer_id = 1;
+
+
+SELECT COUNT(*) AS total_bookings FROM Booking;
+
+
+SELECT * FROM Theatre WHERE city = 'Kolhapur';
