@@ -1,0 +1,78 @@
+Create Database
+use college
+Output:
+switched to db college
+--------------------------------
+Create Collection
+Collection = Table
+Example:
+db.createCollection("student")
+show collections
+Output:
+student
+-------------------------------------------
+C → Create
+
+Insert One Document
+
+db.student.insertOne(
+{
+   id:101,
+   name:"Sam",
+   cgpa:8.5
+}
+)
+
+Insert Multiple Documents
+db.student.insertMany([
+{
+   id:102,
+   name:"John",
+   cgpa:7.8
+},
+{
+   id:103,
+   name:"Alice",
+   cgpa:9.1
+}
+])
+----------------------------------------------------
+R → Read
+Display All Documents
+db.student.find()
+-----------------------------------------------
+U → Update
+Update One Document
+db.student.updateOne(
+   {id:101},
+   {$set:{cgpa:9.0}}
+)
+Update Many
+db.student.updateMany(
+   {},
+   {$set:{college:"XYZ"}}
+)
+---------------------------------------------------
+D → Delete
+Delete One
+db.student.deleteOne(
+{
+   id:103
+}
+)
+Delete Many
+db.student.deleteMany(
+{
+   cgpa:{$lt:7}
+}
+)
+----------------------------------------------------
+Delete Entire Collection = db.student.drop()
+---------------------------------------------
+  Query Operators
+  $gt = Greater Than 
+  $lt = Less Than 
+  $gte = Greater Than Equal
+  $lte = Less Than Equal
+-----------------------------------------------
+  Count Documents = db.student.countDocuments()
