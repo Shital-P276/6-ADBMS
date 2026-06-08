@@ -1,0 +1,54 @@
+
+//CREATE NODE
+CREATE (s:Student {
+   id:101,
+   name:'Sam',
+   cgpa:8.5
+});
+//READ ALL
+MATCH (n)
+RETURN n;
+//CREATE MULTIPLE NODES
+CREATE
+(s1:Student {name:'Sam'}),
+(s2:Student {name:'John'}),
+(s3:Student {name:'Alice'});
+
+//CREATE relationship
+MATCH
+(s1:Student {name:'Sam'}),
+(s2:Student {name:'John'})
+CREATE
+(s1)-[:FRIEND]->(s2);
+
+//TEACHER RELATIONSHIP
+MATCH
+(s:Student {name:'Sam'}),
+(t:Teacher {name:'Prof. Rao'})
+CREATE
+(s)-[:TAUGHT_BY]->(t);
+
+//SHOW ALL STUDENTS
+MATCH (s:Student)
+RETURN s;
+
+//MATCH (s:Student)
+WHERE s.name='Sam'
+RETURN s;
+
+//UPDATE
+MATCH (s:Student {name:'Sam'})
+SET s.cgpa=9.1;
+
+//DELETE 
+MATCH (s:Student {name:'Sam'})
+DELETE s;
+
+//CGPA GREATER THAN 
+MATCH (s:Student)
+WHERE s.cgpa > 8
+RETURN s;
+
+//MATCH (s:Student)
+RETURN AVG(s.cgpa);
+
