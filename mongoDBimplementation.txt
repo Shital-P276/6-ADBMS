@@ -76,3 +76,45 @@ Delete Entire Collection = db.student.drop()
   $lte = Less Than Equal
 -----------------------------------------------
   Count Documents = db.student.countDocuments()
+----------------------------------------------------
+db.employee.aggregate([
+{
+ $count:"TotalEmployees"
+}
+])   
+db.employee.aggregate([
+{
+ $group:{
+   _id:null,
+   totalSalary:{
+      $sum:"$salary"
+   }
+ }
+}
+])
+db.employee.aggregate([
+{
+ $match:{
+   salary:{
+      $gt:45000
+   }
+ }
+}
+])
+db.employee.aggregate([
+{
+ $group:{
+   _id:"$department",
+   avgSalary:{
+      $avg:"$salary"
+   }
+ }
+},
+{
+ $match:{
+   avgSalary:{
+      $gt:50000
+   }
+ }
+}
+])
