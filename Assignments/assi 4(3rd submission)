@@ -1,0 +1,135 @@
+-- Assignment 4 (3rd submission)
+-- Experiment No. 4: Implementation of Range and Hash Partition
+-- Oracle SQL
+
+-- =====================================================
+-- A) RANGE PARTITION
+-- =====================================================
+
+-- Table: emp(id, fname, lname, store_id, department_id)
+-- 4 partitions:
+-- P0: id < 5
+-- P1: id < 10
+-- P2: id < 15
+-- P3: id <= MAXVALUE
+
+CREATE TABLE emp (
+    id            NUMBER PRIMARY KEY,
+    fname         VARCHAR2(25) NOT NULL,
+    lname         VARCHAR2(25) NOT NULL,
+    store_id      NUMBER NOT NULL,
+    department_id NUMBER NOT NULL
+)
+PARTITION BY RANGE (id) (
+    PARTITION p0 VALUES LESS THAN (5),
+    PARTITION p1 VALUES LESS THAN (10),
+    PARTITION p2 VALUES LESS THAN (15),
+    PARTITION p3 VALUES LESS THAN (MAXVALUE)
+);
+
+-- Insert 20 records (id 1 to 20)
+INSERT INTO emp VALUES (1,  'Sam',    'Patil',   101, 10);
+INSERT INTO emp VALUES (2,  'Amit',   'Rao',     101, 20);
+INSERT INTO emp VALUES (3,  'Sneha',  'Kulkarni',102, 10);
+INSERT INTO emp VALUES (4,  'Riya',   'Sharma',  102, 30);
+INSERT INTO emp VALUES (5,  'Sagar',  'Mehta',   103, 20);
+INSERT INTO emp VALUES (6,  'Kiran',  'Nair',    103, 20);
+INSERT INTO emp VALUES (7,  'Sonia',  'Gupta',   104, 40);
+INSERT INTO emp VALUES (8,  'Neha',   'Iyer',    104, 30);
+INSERT INTO emp VALUES (9,  'Siddh',  'Bose',    105, 10);
+INSERT INTO emp VALUES (10, 'Rohan',  'Singh',   105, 40);
+INSERT INTO emp VALUES (11, 'Sakshi', 'Verma',   106, 30);
+INSERT INTO emp VALUES (12, 'Pooja',  'Das',     106, 20);
+INSERT INTO emp VALUES (13, 'Shiv',   'Joshi',   107, 10);
+INSERT INTO emp VALUES (14, 'Nitin',  'Jain',    107, 40);
+INSERT INTO emp VALUES (15, 'Sara',   'Khan',    108, 20);
+INSERT INTO emp VALUES (16, 'Om',     'More',    108, 30);
+INSERT INTO emp VALUES (17, 'Siya',   'Naik',    109, 40);
+INSERT INTO emp VALUES (18, 'Tina',   'Paul',    109, 10);
+INSERT INTO emp VALUES (19, 'Suraj',  'Lal',     110, 20);
+INSERT INTO emp VALUES (20, 'Anu',    'Roy',     110, 30);
+
+COMMIT;
+
+-- Q1. Retrieve employee details from partition P1 and P2.
+SELECT *
+FROM emp PARTITION (p1)
+UNION ALL
+SELECT *
+FROM emp PARTITION (p2)
+ORDER BY id;
+
+-- Q2. Retrieve employee details from partition P0 and P1 where fname begins with 'S'.
+SELECT *
+FROM emp PARTITION (p0)
+WHERE fname LIKE 'S%'
+UNION ALL
+SELECT *
+FROM emp PARTITION (p1)
+WHERE fname LIKE 'S%'
+ORDER BY id;
+
+-- Q3. Count employees from each department from partitions P1, P2 and P3.
+SELECT department_id, COUNT(*) AS emp_count
+FROM (
+    SELECT department_id FROM emp PARTITION (p1)
+    UNION ALL
+    SELECT department_id FROM emp PARTITION (p2)
+    UNION ALL
+    SELECT department_id FROM emp PARTITION (p3)
+)
+GROUP BY department_id
+ORDER BY department_id;
+
+
+-- =====================================================
+-- B) HASH PARTITION
+-- =====================================================
+
+-- Table: sales_hash(salesman_id, salesman_name, sales_amount, week_no)
+-- 4 hash partitions
+
+CREATE TABLE sales_hash (
+    salesman_id   NUMBER(5) PRIMARY KEY,
+    salesman_name VARCHAR2(30),
+    sales_amount  NUMBER(10),
+    week_no       NUMBER(2)
+)
+PARTITION BY HASH (salesman_id) (
+    PARTITION h1,
+    PARTITION h2,
+    PARTITION h3,
+    PARTITION h4
+);
+
+-- Insert at least 10 records
+INSERT INTO sales_hash VALUES (1,  'Ravi',   1800, 1);
+INSERT INTO sales_hash VALUES (2,  'Neha',   2500, 1);
+INSERT INTO sales_hash VALUES (3,  'Suresh', 3200, 2);
+INSERT INTO sales_hash VALUES (4,  'Asha',   4700, 2);
+INSERT INTO sales_hash VALUES (5,  'Mohan',  5100, 3);
+INSERT INTO sales_hash VALUES (6,  'Kavya',  2900, 3);
+INSERT INTO sales_hash VALUES (7,  'Aman',   4300, 4);
+INSERT INTO sales_hash VALUES (8,  'Nita',   3900, 4);
+INSERT INTO sales_hash VALUES (9,  'Rohan',  6200, 1);
+INSERT INTO sales_hash VALUES (10, 'Seema',  2100, 2);
+INSERT INTO sales_hash VALUES (11, 'Tarun',  3400, 3);
+INSERT INTO sales_hash VALUES (12, 'Priti',  2800, 4);
+
+COMMIT;
+
+-- Q1. Retrieve sales details from 2nd partition.
+SELECT *
+FROM sales_hash PARTITION (h2);
+
+-- Q2. Retrieve name of salesmen and amount from 4th partition
+--     where sale amount between 2000 and 5000.
+SELECT salesman_name, sales_amount
+FROM sales_hash PARTITION (h4)
+WHERE sales_amount BETWEEN 2000 AND 5000;
+
+-- Q3. Find average sale amount per week from 3rd partition.
+SELECT week_no, AVG(sales_amount) AS avg_sales_amount
+FROM sales_hash PARTITION (h3)
+GROUP BY week_no
+ORDER BY week_no;
